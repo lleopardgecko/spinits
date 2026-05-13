@@ -8,6 +8,7 @@ Thumbs.db
 # Claude Code
 .claude/
 CLAUDE.local.md
+claude.md
 
 # Editor swap files
 *.swp
