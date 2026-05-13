@@ -33,7 +33,6 @@ body{font-family:'DM Sans',sans-serif;background:#fff;color:#111;min-height:100v
 .card-into{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#999;margin-bottom:.75rem}
 .tags{display:flex;flex-wrap:wrap;gap:.35rem}
 .tag{border:1.5px solid #111;padding:.32rem .75rem;font-size:.83rem;cursor:pointer;color:#111;background:transparent;font-family:'DM Sans',sans-serif;border-radius:0;transition:background .1s,color .1s}
-.tag:hover,.tag:active{background:#111;color:#fff}
 .one-way-note{margin-top:.85rem;padding:.6rem .8rem;background:#fffde7;border-left:3px solid #f0c040;font-size:.78rem;color:#7a6000;font-style:italic;line-height:1.5}
 .no-result{text-align:center;padding:2.5rem 1rem}
 .no-result-big{font-family:'Libre Baskerville',serif;font-style:italic;font-size:1rem;margin-bottom:.3rem;color:#888}
@@ -41,12 +40,10 @@ body{font-family:'DM Sans',sans-serif;background:#fff;color:#111;min-height:100v
 .divider{border:none;border-top:1px solid #eee;margin:1.75rem 0}
 .browse-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#aaa;margin-bottom:.75rem}
 .cats{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:1rem}
-.cat-btn{background:none;border:1px solid #ddd;color:#999;padding:.22rem .65rem;font-size:.72rem;letter-spacing:.04em;cursor:pointer;font-family:'DM Sans',sans-serif;border-radius:0;transition:all .1s}
-.cat-btn:hover,.cat-btn.on{background:#111;color:#fff;border-color:#111}
+.cat-btn{background:none;border:1px solid #e0e0e0;color:#aaa;padding:.22rem .65rem;font-size:.72rem;letter-spacing:.04em;cursor:pointer;font-family:'DM Sans',sans-serif;border-radius:0;transition:all .1s}
 .browse-hint{font-size:.8rem;color:#bbb;padding:.5rem 0}
 .pills{display:flex;flex-wrap:wrap;gap:.3rem}
 .pill{background:none;border:1px solid #e0e0e0;color:#111;padding:.28rem .65rem;font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;border-radius:0}
-.pill:hover,.pill:active{background:#f5f5f5}
 .foot{text-align:center;margin-top:3rem;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:#ccc;border-top:1px solid #eee;padding-top:1.5rem}
 </style>
 </head>
@@ -97,6 +94,19 @@ function categorize(name){
 }
 
 var ALL_CATS = CAT_RULES.map(function(r){ return r[0]; });
+
+var CAT_COLORS = {
+  'Protein':         { bg: '#fdf0ed', border: '#c47a6a', text: '#7a3828' },
+  'Herbs':           { bg: '#eef4ee', border: '#6a9a6a', text: '#2e5c2e' },
+  'Nuts & Seeds':    { bg: '#f4f0e8', border: '#a8926a', text: '#5a4020' },
+  'Spices & Chiles': { bg: '#fdf0e6', border: '#c47840', text: '#7a4010' },
+  'Dairy & Cheese':  { bg: '#fdfae8', border: '#c8b040', text: '#6a5800' },
+  'Legumes':         { bg: '#f0f2e4', border: '#88965a', text: '#3a4820' },
+  'Fruit':           { bg: '#fdf0f2', border: '#c47888', text: '#7a2838' },
+  'Grains & Bread':  { bg: '#f8f0e0', border: '#b89a60', text: '#6a4800' },
+  'Vegetables':      { bg: '#eef4f0', border: '#629a72', text: '#205030' },
+  'Pantry':          { bg: '#f4f4f6', border: '#9898a8', text: '#404050' }
+};
 var itemMap = {};
 var allItems = [];
 
@@ -153,8 +163,13 @@ function showResult(query){
     res.innerHTML = '<div class="card"><div class="no-result"><p class="no-result-big">No swaps on file for “'+ingDisp+'”</p></div></div>';
     return;
   }
-  var tagsHtml = swaps.map(function(s){
-    return '<button class="tag" onclick="pick(\''+s.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')">'+ s +'</button>';
+  var tagsHtml = swaps.map(function(sw){
+    var c = CAT_COLORS[categorize(sw)] || CAT_COLORS['Pantry'];
+    var safe = sw.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return '<button class="tag" style="background:'+c.bg+';border-color:'+c.border+';color:'+c.text+'" '
+      + 'onmouseenter="this.style.background=\''+c.border+'\';this.style.color=\'#fff\'" '
+      + 'onmouseleave="this.style.background=\''+c.bg+'\';this.style.color=\''+c.text+'\'" '
+      + 'onclick="pick(\''+safe+'\')">'+ sw +'</button>';
   }).join('');
   var noteHtml = notes.length ? '<div class="one-way-note">&#9888; '+notes[0]+'</div>' : '';
   res.innerHTML =
@@ -211,18 +226,28 @@ function hideSugg(){
 
 function buildBrowse(filter){
   catsEl.innerHTML = ALL_CATS.map(function(cat){
-    return '<button class="cat-btn'+(filter===cat?' on':'')+'" onclick="filterCat(this.textContent)">'+cat+'</button>';
+    var c = CAT_COLORS[cat] || { bg: '#f4f4f6', border: '#999', text: '#333' };
+    var active = filter === cat;
+    var style = active
+      ? 'background:'+c.bg+';border-color:'+c.border+';color:'+c.text
+      : 'background:none;border-color:#e0e0e0;color:#aaa';
+    return '<button class="cat-btn" style="'+style+'" '
+      + 'onmouseenter="if(this.dataset.active!==\'1\'){this.style.borderColor=\''+c.border+'\';this.style.color=\''+c.text+'\';}" '
+      + 'onmouseleave="if(this.dataset.active!==\'1\'){this.style.borderColor=\'#e0e0e0\';this.style.color=\'#aaa\';}" '
+      + 'data-active="'+(active?'1':'0')+'" '
+      + 'onclick="filterCat(\''+cat.replace(/'/g,"\\'")+'\')">'
+      + cat+'</button>';
   }).join('');
-  if(!filter){
-    pillsEl.innerHTML = '<p class="browse-hint">Select a category above to browse ingredients.</p>';
-    return;
-  }
-  var shown = allItems.filter(function(i){ return categorize(i)===filter; });
-  pillsEl.innerHTML = shown.length
-    ? shown.map(function(i){
-        return '<button class="pill" onclick="pick(\''+i.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')">'+i+'</button>';
-      }).join('')
-    : '<p class="browse-hint">No items in this category.</p>';
+  var shown = filter ? allItems.filter(function(i){ return categorize(i)===filter; }) : allItems;
+  pillsEl.innerHTML = shown.map(function(i){
+    var c = CAT_COLORS[categorize(i)] || CAT_COLORS['Pantry'];
+    var safe = i.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return '<button class="pill" style="background:'+c.bg+';border-color:'+c.border+';color:'+c.text+'" '
+      + 'onmouseenter="this.style.background=\''+c.border+'\';this.style.color=\'#fff\'" '
+      + 'onmouseleave="this.style.background=\''+c.bg+'\';this.style.color=\''+c.text+'\'" '
+      + 'onclick="pick(\''+safe+'\')">'
+      + i+'</button>';
+  }).join('');
 }
 
 function filterCat(cat){

@@ -28,6 +28,19 @@ function categorize(itemName) {
 
 const ALL_CATS = CAT_RULES.map(([cat]) => cat);
 
+const CAT_COLORS = {
+  'Protein':         { bg: '#fdf0ed', border: '#c47a6a', text: '#7a3828' },
+  'Herbs':           { bg: '#eef4ee', border: '#6a9a6a', text: '#2e5c2e' },
+  'Nuts & Seeds':    { bg: '#f4f0e8', border: '#a8926a', text: '#5a4020' },
+  'Spices & Chiles': { bg: '#fdf0e6', border: '#c47840', text: '#7a4010' },
+  'Dairy & Cheese':  { bg: '#fdfae8', border: '#c8b040', text: '#6a5800' },
+  'Legumes':         { bg: '#f0f2e4', border: '#88965a', text: '#3a4820' },
+  'Fruit':           { bg: '#fdf0f2', border: '#c47888', text: '#7a2838' },
+  'Grains & Bread':  { bg: '#f8f0e0', border: '#b89a60', text: '#6a4800' },
+  'Vegetables':      { bg: '#eef4f0', border: '#629a72', text: '#205030' },
+  'Pantry':          { bg: '#f4f4f6', border: '#9898a8', text: '#404050' },
+};
+
 const itemMap = {};
 GROUPS.forEach((g, gi) => {
   g.items.forEach(item => {
@@ -138,9 +151,15 @@ export default function SpinIts() {
     divider: { border: 'none', borderTop: '1px solid #eee', margin: '1.75rem 0' },
     browseLabel: { fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#aaa', marginBottom: '0.75rem' },
     cats: { display: 'flex', flexWrap: 'wrap', gap: '0.3rem', marginBottom: '1rem' },
-    catBtn: (active) => ({ background: active ? '#111' : 'none', border: '1px solid', borderColor: active ? '#111' : '#ddd', color: active ? '#fff' : '#999', padding: '0.22rem 0.65rem', fontSize: '0.72rem', letterSpacing: '0.04em', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", borderRadius: 0 }),
+    catBtn: (active, cat) => {
+      const c = CAT_COLORS[cat] || { bg: '#f4f4f6', border: '#999', text: '#333' };
+      return { background: active ? c.bg : 'none', border: '1px solid', borderColor: active ? c.border : '#e0e0e0', color: active ? c.text : '#aaa', padding: '0.22rem 0.65rem', fontSize: '0.72rem', letterSpacing: '0.04em', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", borderRadius: 0 };
+    },
     pills: { display: 'flex', flexWrap: 'wrap', gap: '0.3rem' },
-    pill: { background: 'none', border: '1px solid #e0e0e0', color: '#111', padding: '0.28rem 0.65rem', fontSize: '0.78rem', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", borderRadius: 0 },
+    pill: (cat) => {
+      const c = cat ? CAT_COLORS[cat] : null;
+      return { background: c ? c.bg : 'none', border: `1px solid ${c ? c.border : '#e0e0e0'}`, color: c ? c.text : '#111', padding: '0.28rem 0.65rem', fontSize: '0.78rem', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", borderRadius: 0 };
+    },
     browseHint: { fontSize: '0.8rem', color: '#bbb', padding: '0.5rem 0' },
     foot: { textAlign: 'center', marginTop: '3rem', fontSize: '0.68rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#ccc', borderTop: '1px solid #eee', paddingTop: '1.5rem' },
   };
@@ -190,13 +209,18 @@ export default function SpinIts() {
               <div style={s.cardBody}>
                 <p style={s.cardInto}>try instead →</p>
                 <div style={s.tags}>
-                  {result.swaps.map(sw => (
-                    <button key={sw} style={s.tag} onClick={() => pick(sw)}
-                      onMouseEnter={e => { e.target.style.background = '#111'; e.target.style.color = '#fff'; }}
-                      onMouseLeave={e => { e.target.style.background = 'transparent'; e.target.style.color = '#111'; }}>
-                      {sw}
-                    </button>
-                  ))}
+                  {result.swaps.map(sw => {
+                    const c = CAT_COLORS[categorize(sw)] || CAT_COLORS['Pantry'];
+                    return (
+                      <button key={sw}
+                        style={{ ...s.tag, background: c.bg, border: `1.5px solid ${c.border}`, color: c.text }}
+                        onClick={() => pick(sw)}
+                        onMouseEnter={e => { e.currentTarget.style.background = c.border; e.currentTarget.style.color = '#fff'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = c.bg; e.currentTarget.style.color = c.text; }}>
+                        {sw}
+                      </button>
+                    );
+                  })}
                 </div>
                 {result.note && <div style={s.note}>⚠ {result.note}</div>}
               </div>
@@ -218,7 +242,7 @@ export default function SpinIts() {
       <p style={s.browseLabel}>Browse by category</p>
       <div style={s.cats}>
         {ALL_CATS.map(cat => (
-          <button key={cat} style={s.catBtn(catFilter === cat)}
+          <button key={cat} style={s.catBtn(catFilter === cat, cat)}
             onClick={() => setCatFilter(catFilter === cat ? null : cat)}>
             {cat}
           </button>
@@ -226,13 +250,16 @@ export default function SpinIts() {
       </div>
       <div style={s.pills}>
         {catFilter
-          ? filteredItems.map(i => (
-              <button key={i} style={s.pill} onClick={() => pick(i)}
-                onMouseEnter={e => e.target.style.background = '#f5f5f5'}
-                onMouseLeave={e => e.target.style.background = 'none'}>
-                {i}
-              </button>
-            ))
+          ? filteredItems.map(i => {
+              const pc = CAT_COLORS[catFilter];
+              return (
+                <button key={i} style={s.pill(catFilter)} onClick={() => pick(i)}
+                  onMouseEnter={e => { e.currentTarget.style.background = pc ? pc.border : '#f5f5f5'; e.currentTarget.style.color = pc ? '#fff' : '#111'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = pc ? pc.bg : 'none'; e.currentTarget.style.color = pc ? pc.text : '#111'; }}>
+                  {i}
+                </button>
+              );
+            })
           : <p style={s.browseHint}>Select a category above to browse ingredients.</p>
         }
       </div>
