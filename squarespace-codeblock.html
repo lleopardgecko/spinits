@@ -1,0 +1,254 @@
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+#spinits-app *{box-sizing:border-box;margin:0;padding:0}
+#spinits-app{font-family:'DM Sans',sans-serif;background:#fff;color:#111;min-height:100vh}
+#spinits-app .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+#spinits-app .head{text-align:center;padding-bottom:1.5rem;border-bottom:2px solid #111;margin-bottom:2rem}
+#spinits-app .eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#888;margin-bottom:.5rem}
+#spinits-app .title{font-family:'Libre Baskerville',serif;font-size:clamp(2rem,6vw,2.6rem);font-weight:700;line-height:1;letter-spacing:-.02em}
+#spinits-app .title em{font-style:italic;font-weight:400}
+#spinits-app .sub{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#aaa;margin-top:.6rem}
+#spinits-app .search-wrap{position:relative;margin-bottom:1.75rem}
+#spinits-app .search-input{width:100%;padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.95rem;border:1.5px solid #111;background:#fff;color:#111;outline:none;border-radius:0;-webkit-appearance:none}
+#spinits-app .search-input:focus{outline:2px solid #111;outline-offset:2px}
+#spinits-app .search-input::placeholder{color:#bbb}
+#spinits-app .suggestions{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid #111;border-top:none;max-height:220px;overflow-y:auto;z-index:50;display:none}
+#spinits-app .suggestions.open{display:block}
+#spinits-app .sugg-item{padding:.55rem 1rem;font-size:.88rem;cursor:pointer;border-bottom:1px solid #eee;color:#111}
+#spinits-app .sugg-item:last-child{border-bottom:none}
+#spinits-app .sugg-item:hover,#spinits-app .sugg-item:active{background:#f5f5f5}
+#spinits-app .result{margin-bottom:2rem}
+#spinits-app .card{border:1.5px solid #111}
+#spinits-app .card-head{background:#111;color:#fff;padding:1rem 1.25rem;display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap}
+#spinits-app .card-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;opacity:.5;flex-shrink:0}
+#spinits-app .card-name{font-family:'Libre Baskerville',serif;font-size:1.3rem;font-style:italic;flex:1;min-width:0}
+#spinits-app .card-count{font-size:9px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;margin-left:auto;flex-shrink:0}
+#spinits-app .card-body{padding:1.1rem 1.25rem}
+#spinits-app .card-into{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#999;margin-bottom:.75rem}
+#spinits-app .tags{display:flex;flex-wrap:wrap;gap:.35rem}
+#spinits-app .tag{border:1.5px solid #111;padding:.32rem .75rem;font-size:.83rem;cursor:pointer;color:#111;background:transparent;font-family:'DM Sans',sans-serif;border-radius:0;transition:background .1s,color .1s}
+#spinits-app .one-way-note{margin-top:.85rem;padding:.6rem .8rem;background:#fffde7;border-left:3px solid #f0c040;font-size:.78rem;color:#7a6000;font-style:italic;line-height:1.5}
+#spinits-app .no-result{text-align:center;padding:2.5rem 1rem}
+#spinits-app .no-result-big{font-family:'Libre Baskerville',serif;font-style:italic;font-size:1rem;margin-bottom:.3rem;color:#888}
+#spinits-app .no-result p{font-size:.8rem;color:#bbb}
+#spinits-app .divider{border:none;border-top:1px solid #eee;margin:1.75rem 0}
+#spinits-app .browse-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#aaa;margin-bottom:.75rem}
+#spinits-app .cats{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:1rem}
+#spinits-app .cat-btn{background:none;border:1px solid #e0e0e0;color:#aaa;padding:.22rem .65rem;font-size:.72rem;letter-spacing:.04em;cursor:pointer;font-family:'DM Sans',sans-serif;border-radius:0;transition:all .1s}
+#spinits-app .browse-hint{font-size:.8rem;color:#bbb;padding:.5rem 0}
+#spinits-app .pills{display:flex;flex-wrap:wrap;gap:.3rem}
+#spinits-app .pill{background:none;border:1px solid #e0e0e0;color:#111;padding:.28rem .65rem;font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;border-radius:0}
+#spinits-app .foot{text-align:center;margin-top:3rem;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:#ccc;border-top:1px solid #eee;padding-top:1.5rem}
+</style>
+<div id="spinits-app">
+<div class="wrap">
+  <div class="head">
+    <p class="eyebrow">Food Processing &middot; Carla Lalli</p>
+    <h1 class="title">Spin <em>Its</em></h1>
+    <p class="sub">Ingredient swap database</p>
+  </div>
+  <div class="search-wrap">
+    <input class="search-input" id="inp" type="text"
+           placeholder="Search any ingredient — e.g. anchovies, kale, mirin…"
+           autocomplete="off" spellcheck="false">
+    <div class="suggestions" id="sugg"></div>
+  </div>
+  <div class="result" id="res"></div>
+  <hr class="divider">
+  <p class="browse-label">Browse by category</p>
+  <div class="cats" id="cats"></div>
+  <div class="pills" id="pills"></div>
+  <p class="foot">Spin Its &middot; All swaps bidirectional unless noted</p>
+</div>
+</div>
+<script src="https://lleopardgecko.github.io/spinits/ingredients.js"></script>
+<script>
+function nk(s){ return s.trim().toLowerCase().replace(/\s+/g,' '); }
+
+var CAT_RULES = [
+  ['Protein',        /\bchicken|\bbeef\b|\bpork|\blamb|\bturkey|\bsalmon|\btuna|\bcod\b|\bshrimp|\bbass|\bflounder|\bhalibut|\btrout|\bbranzino|\bsnapper|\bhake|\bpollock|\bsable|\banchov|colatura|\bclam|\bmussel|\blobster|\bsquid|\bscallop|\beggs?\b|\bbacon|\bpancetta|\bguanciale|\bsalami|\bham\b|\bprosciutto|\bchorizo|\bsausage|\bcrab|arctic char|rotisserie|\bribs?\b|brisket|skirt steak|flank steak|sirloin|tri.tip|osso buco|\bshank/i],
+  ['Herbs',          /\bbasil|\bcilantro|\bmint|\bparsley|\bdill|\bthyme|\brosemary|\btarragon|\bchives|\boregano|\bmarjoram|bay leave|\bsage|\blavender|\bchervil|\bperilla|\blemongrass|fennel frond|\bherbs?|dried mint|dried oregano|scallion green|\bmakrut/i],
+  ['Nuts & Seeds',   /\balmond|\bwalnut|\bcashew|\bpecan|\bhazelnut|\bpistachio|\bpeanut|\bpepita|\bsesame|sunflower seed|\bflaxseed|hemp seed|\bchia|\bcoconut|pine nut/i],
+  ['Spices & Chiles',/\bpowder|\bflakes?|\bchiles?|aleppo|urfa|maras|silk chile|gochugaru|\bsichuan|\bpeppercorns?|\bpaprika|\bcumin|\bcoriander|\bcardamom|\bcinnamon|\bturmeric|\bsumac|\bcayenne|star anise|\bnutmeg|\bjalape\xf1o|\bserrano|\bfresno|\bhabanero|thai chile|garam masala|\bberbere|five.spice|espelette|piment\xf3n|\bchipotle|\bguajillo|\bancho|\bpasilla|\btaviche|\bmsg\b|citric acid|\bamchur|furikake|anise seed|caraway|black pepper|fennel seed/i],
+  ['Dairy & Cheese', /\bbutter|\bheavy cream|half.and.half|\bmilk|\byogurt|\blabneh|\bmozzarella|parmigiano|\bpecorino|\bfeta|\bricotta|\bburrata|\bcheddar|gruy|\bmanchego|\bhalloumi|\bghee|\bbuttermilk|grana padano|\bcotija|\bqueso|\bscamorza|\bmanouri|\bpaneer|\bgouda|monterey jack|\bskyr|cr\xe8me fra\xeeche|sour cream|ciliegine|cottage cheese|cream cheese/i],
+  ['Legumes',        /cannellini|flageolet|pinto bean|black bean|white bean|butter bean|lima bean|\bgigante|\bchickpeas?|\blentils?|black.eyed pea|runner bean|cranberry bean|\bayocote|corona bean|\btarbais|mung bean|\btofu/i],
+  ['Fruit',          /\bapple|\bpear|\bpeach|\bnectarine|\bberr|\bcherr|\bfig|\bdate|\braisin|\bapricot|\bplum|\bbanana|\bcantaloupe|\bhoneydew|\bwatermelon|\bpomelo|\bgrapefruit|\borange|\blemon|\blime|strawberr|\bpomegranate|\bpersimmon|\bcurrant|gooseberr|blood orange|barberr|\bcitrus/i],
+  ['Grains & Bread', /\brice|\bfarro|\bbarley|\bquinoa|\bbulgur|\bspelt|wheat berr|\boats?|\bpolenta|\bgrits|\bnoodle|\bspaghetti|\brigatoni|\bfusilli|\borzo|\bditalini|\bfregola|\bfreekeh|\bteff|\bflour|\bbread|\bfocaccia|\bpita|\borecchiette|\bgemelli|\bpaccheri|\blumache|\bbucatini|\bfettuccine|\blinguine|\bcavatappi|\bcalamarata|\bradiatore|\bmafaldine|\bpanko|breadcrumb|\bpasta|baguette|ciabatta|anelli/i],
+  ['Vegetables',     /\bkale|\bspinach|\bbroccoli|\bcauliflower|\bcarrots?|\bcelery|\bfennel|\bzucchini|\beggplant|\bsquash|\bpotatoes?|\bbeets?|tomato|\bcabbage|\blettuce|\barugula|\bendive|\bradicchio|\bescarole|\basparagus|\bcorn|\bleek|\bonion|\bgarlic|\bshallot|\bscallions?|\bradish|\bdaikon|\bcucumber|\bartichoke|bok choy|\bwatercress|\bromaine|\bmushroom|bean sprout|\bromanesco|\bkohlrabi|\bparsnip|\bbrussels|\bchard|\bcollard|\bchicory|fris\xe9e|\btreviso|little gem|pea shoot|wax bean|snap pea|snow pea|green bean|romano bean|long bean|bell pepper|\bpoblano|\bcubanelle|\bnardello|\bpiparra|\bpeperoncini|banana pepper|sweet pepper|\bramp|\bkoginut|\bhoneynut|acorn squash|butternut|broccolini|mustard green|castelfranco|chioggia/i],
+  ['Pantry', null]
+];
+
+function categorize(name){
+  var s = name.toLowerCase();
+  for(var i=0;i<CAT_RULES.length;i++){
+    var re = CAT_RULES[i][1];
+    if(!re || re.test(s)) return CAT_RULES[i][0];
+  }
+  return 'Pantry';
+}
+
+var ALL_CATS = CAT_RULES.map(function(r){ return r[0]; });
+
+var CAT_COLORS = {
+  'Protein':         { bg: '#fdf0ed', border: '#c47a6a', text: '#7a3828' },
+  'Herbs':           { bg: '#eef4ee', border: '#6a9a6a', text: '#2e5c2e' },
+  'Nuts & Seeds':    { bg: '#f4f0e8', border: '#a8926a', text: '#5a4020' },
+  'Spices & Chiles': { bg: '#fdf0e6', border: '#c47840', text: '#7a4010' },
+  'Dairy & Cheese':  { bg: '#fdfae8', border: '#c8b040', text: '#6a5800' },
+  'Legumes':         { bg: '#f0f2e4', border: '#88965a', text: '#3a4820' },
+  'Fruit':           { bg: '#fdf0f2', border: '#c47888', text: '#7a2838' },
+  'Grains & Bread':  { bg: '#f8f0e0', border: '#b89a60', text: '#6a4800' },
+  'Vegetables':      { bg: '#eef4f0', border: '#629a72', text: '#205030' },
+  'Pantry':          { bg: '#f4f4f6', border: '#9898a8', text: '#404050' }
+};
+var itemMap = {};
+var allItems = [];
+
+var inp    = document.getElementById('inp');
+var sugg   = document.getElementById('sugg');
+var res    = document.getElementById('res');
+var catsEl = document.getElementById('cats');
+var pillsEl= document.getElementById('pills');
+var curCat = null;
+
+function buildItemMap(){
+  itemMap = {};
+  GROUPS.forEach(function(g,gi){
+    g.items.forEach(function(item){
+      var k = nk(item);
+      if(!itemMap[k]){
+        itemMap[k] = {display:item, groupIdxs:[]};
+      } else {
+        var cur = itemMap[k].display;
+        if(item[0] && item[0]===item[0].toUpperCase() && cur[0]===cur[0].toLowerCase())
+          itemMap[k].display = item;
+      }
+      if(itemMap[k].groupIdxs.indexOf(gi)===-1)
+        itemMap[k].groupIdxs.push(gi);
+    });
+  });
+  allItems = Object.keys(itemMap)
+    .map(function(k){ return itemMap[k].display; })
+    .sort(function(a,b){ return a.toLowerCase().localeCompare(b.toLowerCase()); });
+}
+
+function showResult(query){
+  var k = nk(query);
+  var entry = itemMap[k];
+  if(!entry){
+    res.innerHTML = '<div class="card"><div class="no-result"><p class="no-result-big">Nothing found for “'+query+'”</p><p>Try browsing below.</p></div></div>';
+    return;
+  }
+  var ingDisp = entry.display;
+  var swapMap = {};
+  entry.groupIdxs.forEach(function(gi){
+    GROUPS[gi].items.forEach(function(item){
+      var ik = nk(item);
+      if(ik!==k) swapMap[ik] = item;
+    });
+  });
+  var swaps = Object.keys(swapMap)
+    .map(function(k){ return swapMap[k]; })
+    .sort(function(a,b){ return a.toLowerCase().localeCompare(b.toLowerCase()); });
+  var notes = entry.groupIdxs
+    .filter(function(gi){ return GROUPS[gi].note; })
+    .map(function(gi){ return GROUPS[gi].note; });
+  if(!swaps.length){
+    res.innerHTML = '<div class="card"><div class="no-result"><p class="no-result-big">No swaps on file for “'+ingDisp+'”</p></div></div>';
+    return;
+  }
+  var tagsHtml = swaps.map(function(sw){
+    var c = CAT_COLORS[categorize(sw)] || CAT_COLORS['Pantry'];
+    var safe = sw.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return '<button class="tag" style="background:'+c.bg+';border-color:'+c.border+';color:'+c.text+'" '
+      + 'onmouseenter="this.style.background=\''+c.border+'\';this.style.color=\'#fff\'" '
+      + 'onmouseleave="this.style.background=\''+c.bg+'\';this.style.color=\''+c.text+'\'" '
+      + 'onclick="pick(\''+safe+'\')">'+ sw +'</button>';
+  }).join('');
+  var noteHtml = notes.length ? '<div class="one-way-note">&#9888; '+notes[0]+'</div>' : '';
+  res.innerHTML =
+    '<div class="card">'+
+      '<div class="card-head">'+
+        '<span class="card-label">swapping</span>'+
+        '<span class="card-name">'+ingDisp+'</span>'+
+        '<span class="card-count">'+swaps.length+' swap'+(swaps.length!==1?'s':'')+'</span>'+
+      '</div>'+
+      '<div class="card-body">'+
+        '<p class="card-into">try instead →</p>'+
+        '<div class="tags">'+tagsHtml+'</div>'+
+        noteHtml+
+      '</div>'+
+    '</div>';
+}
+
+function pick(name){
+  inp.value = name;
+  hideSugg();
+  showResult(name);
+  res.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+inp.addEventListener('input', function(){
+  var v = inp.value.trim();
+  if(!v){ hideSugg(); return; }
+  var nv = nk(v);
+  var hits = allItems.filter(function(item){ return nk(item).indexOf(nv)!==-1; }).slice(0,10);
+  if(!hits.length){ hideSugg(); return; }
+  var escaped = v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  var re = new RegExp('('+escaped+')','gi');
+  sugg.innerHTML = hits.map(function(h){
+    return '<div class="sugg-item" onmousedown="pick(\''+h.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')">'
+      + h.replace(re,'<strong style="text-decoration:underline">$1</strong>')
+      + '</div>';
+  }).join('');
+  sugg.classList.add('open');
+});
+
+inp.addEventListener('keydown', function(e){
+  if(e.key==='Enter'){ hideSugg(); if(inp.value.trim()) showResult(inp.value.trim()); }
+  if(e.key==='Escape') hideSugg();
+});
+
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.search-wrap')) hideSugg();
+});
+
+function hideSugg(){
+  sugg.classList.remove('open');
+  sugg.innerHTML='';
+}
+
+function buildBrowse(filter){
+  catsEl.innerHTML = ALL_CATS.map(function(cat){
+    var c = CAT_COLORS[cat] || { bg: '#f4f4f6', border: '#999', text: '#333' };
+    var active = filter === cat;
+    var style = active
+      ? 'background:'+c.bg+';border-color:'+c.border+';color:'+c.text
+      : 'background:none;border-color:#e0e0e0;color:#aaa';
+    return '<button class="cat-btn" style="'+style+'" '
+      + 'onmouseenter="if(this.dataset.active!==\'1\'){this.style.borderColor=\''+c.border+'\';this.style.color=\''+c.text+'\';}" '
+      + 'onmouseleave="if(this.dataset.active!==\'1\'){this.style.borderColor=\'#e0e0e0\';this.style.color=\'#aaa\';}" '
+      + 'data-active="'+(active?'1':'0')+'" '
+      + 'onclick="filterCat(\''+cat.replace(/'/g,"\\'")+'\')">'
+      + cat+'</button>';
+  }).join('');
+  var shown = filter ? allItems.filter(function(i){ return categorize(i)===filter; }) : allItems;
+  pillsEl.innerHTML = shown.map(function(i){
+    var c = CAT_COLORS[categorize(i)] || CAT_COLORS['Pantry'];
+    var safe = i.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return '<button class="pill" style="background:'+c.bg+';border-color:'+c.border+';color:'+c.text+'" '
+      + 'onmouseenter="this.style.background=\''+c.border+'\';this.style.color=\'#fff\'" '
+      + 'onmouseleave="this.style.background=\''+c.bg+'\';this.style.color=\''+c.text+'\'" '
+      + 'onclick="pick(\''+safe+'\')">'
+      + i+'</button>';
+  }).join('');
+}
+
+function filterCat(cat){
+  curCat = (curCat===cat) ? null : cat;
+  buildBrowse(curCat);
+}
+
+buildItemMap();
+buildBrowse(null);
+</script>

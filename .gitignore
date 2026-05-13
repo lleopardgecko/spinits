@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Windows
+Thumbs.db
+
+# Claude Code
+.claude/
+CLAUDE.local.md
+
+# Editor swap files
+*.swp
+*.swo
+
+# Env files
+.env
+.env.*
