@@ -1,50 +1,50 @@
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-#spinits-app *{box-sizing:border-box;margin:0;padding:0}
-#spinits-app{font-family:'DM Sans',sans-serif;background:#fff;color:#111;min-height:100vh}
-#spinits-app .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
-#spinits-app .head{text-align:center;padding-bottom:1.5rem;border-bottom:2px solid #111;margin-bottom:2rem}
-#spinits-app .eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#888;margin-bottom:.5rem}
-#spinits-app .title{font-family:'Libre Baskerville',serif;font-size:clamp(2rem,6vw,2.6rem);font-weight:700;line-height:1;letter-spacing:-.02em}
-#spinits-app .title em{font-style:italic;font-weight:400}
-#spinits-app .sub{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#aaa;margin-top:.6rem}
-#spinits-app .search-wrap{position:relative;margin-bottom:1.75rem}
-#spinits-app .search-input{width:100%;padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.95rem;border:1.5px solid #111;background:#fff;color:#111;outline:none;border-radius:0;-webkit-appearance:none}
-#spinits-app .search-input:focus{outline:2px solid #111;outline-offset:2px}
-#spinits-app .search-input::placeholder{color:#bbb}
-#spinits-app .suggestions{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid #111;border-top:none;max-height:220px;overflow-y:auto;z-index:50;display:none}
-#spinits-app .suggestions.open{display:block}
-#spinits-app .sugg-item{padding:.55rem 1rem;font-size:.88rem;cursor:pointer;border-bottom:1px solid #eee;color:#111}
-#spinits-app .sugg-item:last-child{border-bottom:none}
-#spinits-app .sugg-item:hover,#spinits-app .sugg-item:active{background:#f5f5f5}
-#spinits-app .result{margin-bottom:2rem}
-#spinits-app .card{border:1.5px solid #111}
-#spinits-app .card-head{background:#111;color:#fff;padding:1rem 1.25rem;display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap}
-#spinits-app .card-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;opacity:.5;flex-shrink:0}
-#spinits-app .card-name{font-family:'Libre Baskerville',serif;font-size:1.3rem;font-style:italic;flex:1;min-width:0}
-#spinits-app .card-count{font-size:9px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;margin-left:auto;flex-shrink:0}
-#spinits-app .card-body{padding:1.1rem 1.25rem}
-#spinits-app .card-into{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#999;margin-bottom:.75rem}
-#spinits-app .tags{display:flex;flex-wrap:wrap;gap:.35rem}
-#spinits-app .tag{border:1.5px solid #111;padding:.32rem .75rem;font-size:.83rem;cursor:pointer;color:#111;background:transparent;font-family:'DM Sans',sans-serif;border-radius:0;transition:background .1s,color .1s}
-#spinits-app .one-way-note{margin-top:.85rem;padding:.6rem .8rem;background:#fffde7;border-left:3px solid #f0c040;font-size:.78rem;color:#7a6000;font-style:italic;line-height:1.5}
-#spinits-app .no-result{text-align:center;padding:2.5rem 1rem}
-#spinits-app .no-result-big{font-family:'Libre Baskerville',serif;font-style:italic;font-size:1rem;margin-bottom:.3rem;color:#888}
-#spinits-app .no-result p{font-size:.8rem;color:#bbb}
-#spinits-app .divider{border:none;border-top:1px solid #eee;margin:1.75rem 0}
-#spinits-app .browse-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#aaa;margin-bottom:.75rem}
-#spinits-app .cats{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:1rem}
-#spinits-app .cat-btn{background:none;border:1px solid #e0e0e0;color:#aaa;padding:.22rem .65rem;font-size:.72rem;letter-spacing:.04em;cursor:pointer;font-family:'DM Sans',sans-serif;border-radius:0;transition:all .1s}
-#spinits-app .browse-hint{font-size:.8rem;color:#bbb;padding:.5rem 0}
-#spinits-app .pills{display:flex;flex-wrap:wrap;gap:.3rem}
-#spinits-app .pill{background:none;border:1px solid #e0e0e0;color:#111;padding:.28rem .65rem;font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;border-radius:0}
-#spinits-app .foot{text-align:center;margin-top:3rem;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:#ccc;border-top:1px solid #eee;padding-top:1.5rem}
+#spinit-app *{box-sizing:border-box;margin:0;padding:0}
+#spinit-app{font-family:'DM Sans',sans-serif;background:#fff;color:#111;min-height:100vh}
+#spinit-app .wrap{max-width:660px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+#spinit-app .head{text-align:center;padding-bottom:1.5rem;border-bottom:2px solid #111;margin-bottom:2rem}
+#spinit-app .eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#888;margin-bottom:.5rem}
+#spinit-app .title{font-family:'Libre Baskerville',serif;font-size:clamp(2rem,6vw,2.6rem);font-weight:700;line-height:1;letter-spacing:-.02em}
+#spinit-app .title em{font-style:italic;font-weight:400}
+#spinit-app .sub{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#aaa;margin-top:.6rem}
+#spinit-app .search-wrap{position:relative;margin-bottom:1.75rem}
+#spinit-app .search-input{width:100%;padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.95rem;border:1.5px solid #111;background:#fff;color:#111;outline:none;border-radius:0;-webkit-appearance:none}
+#spinit-app .search-input:focus{outline:2px solid #111;outline-offset:2px}
+#spinit-app .search-input::placeholder{color:#bbb}
+#spinit-app .suggestions{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid #111;border-top:none;max-height:220px;overflow-y:auto;z-index:50;display:none}
+#spinit-app .suggestions.open{display:block}
+#spinit-app .sugg-item{padding:.55rem 1rem;font-size:.88rem;cursor:pointer;border-bottom:1px solid #eee;color:#111}
+#spinit-app .sugg-item:last-child{border-bottom:none}
+#spinit-app .sugg-item:hover,#spinit-app .sugg-item:active{background:#f5f5f5}
+#spinit-app .result{margin-bottom:2rem}
+#spinit-app .card{border:1.5px solid #111}
+#spinit-app .card-head{background:#111;color:#fff;padding:1rem 1.25rem;display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap}
+#spinit-app .card-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;opacity:.5;flex-shrink:0}
+#spinit-app .card-name{font-family:'Libre Baskerville',serif;font-size:1.3rem;font-style:italic;flex:1;min-width:0}
+#spinit-app .card-count{font-size:9px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;margin-left:auto;flex-shrink:0}
+#spinit-app .card-body{padding:1.1rem 1.25rem}
+#spinit-app .card-into{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#999;margin-bottom:.75rem}
+#spinit-app .tags{display:flex;flex-wrap:wrap;gap:.35rem}
+#spinit-app .tag{border:1.5px solid #111;padding:.32rem .75rem;font-size:.83rem;cursor:pointer;color:#111;background:transparent;font-family:'DM Sans',sans-serif;border-radius:0;transition:background .1s,color .1s}
+#spinit-app .one-way-note{margin-top:.85rem;padding:.6rem .8rem;background:#fffde7;border-left:3px solid #f0c040;font-size:.78rem;color:#7a6000;font-style:italic;line-height:1.5}
+#spinit-app .no-result{text-align:center;padding:2.5rem 1rem}
+#spinit-app .no-result-big{font-family:'Libre Baskerville',serif;font-style:italic;font-size:1rem;margin-bottom:.3rem;color:#888}
+#spinit-app .no-result p{font-size:.8rem;color:#bbb}
+#spinit-app .divider{border:none;border-top:1px solid #eee;margin:1.75rem 0}
+#spinit-app .browse-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#aaa;margin-bottom:.75rem}
+#spinit-app .cats{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:1rem}
+#spinit-app .cat-btn{background:none;border:1px solid #e0e0e0;color:#aaa;padding:.22rem .65rem;font-size:.72rem;letter-spacing:.04em;cursor:pointer;font-family:'DM Sans',sans-serif;border-radius:0;transition:all .1s}
+#spinit-app .browse-hint{font-size:.8rem;color:#bbb;padding:.5rem 0}
+#spinit-app .pills{display:flex;flex-wrap:wrap;gap:.3rem}
+#spinit-app .pill{background:none;border:1px solid #e0e0e0;color:#111;padding:.28rem .65rem;font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;border-radius:0}
+#spinit-app .foot{text-align:center;margin-top:3rem;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:#ccc;border-top:1px solid #eee;padding-top:1.5rem}
 </style>
-<div id="spinits-app">
+<div id="spinit-app">
 <div class="wrap">
   <div class="head">
     <p class="eyebrow">Food Processing &middot; Carla Lalli</p>
-    <h1 class="title">Spin <em>Its</em></h1>
+    <h1 class="title">Spin <em>It</em></h1>
     <p class="sub">Ingredient swap database</p>
   </div>
   <div class="search-wrap">
@@ -58,10 +58,10 @@
   <p class="browse-label">Browse by category</p>
   <div class="cats" id="cats"></div>
   <div class="pills" id="pills"></div>
-  <p class="foot">Spin Its &middot; All swaps bidirectional unless noted</p>
+  <p class="foot">Spin It &middot; All swaps bidirectional unless noted</p>
 </div>
 </div>
-<script src="https://lleopardgecko.github.io/spinits/ingredients.js"></script>
+<script src="https://lleopardgecko.github.io/spinit/ingredients.js"></script>
 <script>
 function nk(s){ return s.trim().toLowerCase().replace(/\s+/g,' '); }
 

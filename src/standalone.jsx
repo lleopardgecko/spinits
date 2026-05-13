@@ -61,7 +61,7 @@ const ALL_ITEMS = Object.values(itemMap)
   .map(v => v.display)
   .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 
-export default function SpinIts() {
+export default function SpinIt() {
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
@@ -170,7 +170,7 @@ export default function SpinIts() {
 
       <div style={s.head}>
         <p style={s.eyebrow}>Food Processing · Carla Lalli</p>
-        <h1 style={s.title}>Spin <em style={s.em}>Its</em></h1>
+        <h1 style={s.title}>Spin <em style={s.em}>It</em></h1>
         <p style={s.sub}>Ingredient swap database · {GROUPS.length} swap groups</p>
       </div>
 
@@ -264,7 +264,7 @@ export default function SpinIts() {
         }
       </div>
 
-      <p style={s.foot}>Spin Its · All swaps bidirectional unless noted</p>
+      <p style={s.foot}>Spin It · All swaps bidirectional unless noted</p>
     </div>
   );
 }
